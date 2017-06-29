@@ -4,7 +4,7 @@
 
 param ([string]$DeploySource=$(Read-Host "Enter user name or press enter to deploy latest build"))
 
-Import-module VirTraDeployUtilities
+Import-module BBModule
 
 $sourcePath = ""
 
