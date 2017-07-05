@@ -1,4 +1,4 @@
-﻿Function Get-InstalledSoftware
+﻿Function Get-BBInstalledSoftware
 {
 <#	
 .SYNOPSIS
@@ -6,12 +6,17 @@
 .EXAMPLE
 .PARAMETER
 .NOTES
+Version:    1.0.2
+Updated:    July 05, 2017
+Purpose:    Changed output file name by including the date and time the 
+			script was run.
+	
 Version:    1.0.1
 Updated:    June 22, 2017
 Purpose:    Stopped information from being displayed on
             the default screen.
 	
-Version:	1.0.1
+Version:	1.0.0
 Author:		Brad Beckwith
 Group:		IKGF ISE Team
 Date:		May 8, 2017
@@ -27,9 +32,10 @@ Date:		May 8, 2017
 		[alias('hostname')]
 		[ValidateLength(1, 16)]
 		[ValidateCount(1, 125)]
-		[string]$computername = $ENV:Computername,
-		[string]$output = "$computername.LocalSoftwareList.txt",
-		[string]$outputcsv = "$computername.LocalSoftwareList.csv"
+		[string]$computername = ($ENV:Computername),
+		[string]$dt = (Get-Date -uformat "%Y%m%d%H%M%S"),
+		[string]$output = "$computername.SoftwareList.$dt.txt",
+		[string]$outputcsv = "$computername.SoftwareList.$dt.csv"
 	)
 	
 	#CLEAR
@@ -47,9 +53,9 @@ Date:		May 8, 2017
 	Write-Host "`nGathering local software list`n" -ForegroundColor Green
 	
 	Write-Verbose "Creating empty arrays`n"
-	$arry
-	$arrya
-	$arryb
+	$arry = @()
+	$arrya = @()
+	$arryb = @()
 	
 	Write-Verbose "Creating Array A`n"
 	$arrya = invoke-command {
@@ -77,6 +83,7 @@ Date:		May 8, 2017
 	if (Test-Path $output)
 	{
 		$a = Get-Content $output | Select -skip 1
+		$a = $a -replace "`0", " "
 		$a | out-file $output
 		$a = $a -replace "\s{2,}", ","
 		$a = $a -replace "Microsoft.P", "Microsoft"
