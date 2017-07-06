@@ -16,7 +16,7 @@ Updated:    June 22, 2017
 Purpose:    Stopped information from being displayed on
             the default screen.
 	
-Version:	1.0.0
+Version:	1.0.5
 Author:		Brad Beckwith
 Group:		IKGF ISE Team
 Date:		May 8, 2017
@@ -34,23 +34,14 @@ Date:		May 8, 2017
 		[ValidateCount(1, 125)]
 		[string]$computername = ($ENV:Computername),
 		[string]$dt = (Get-Date -uformat "%Y%m%d%H%M%S"),
-		[string]$output = "$computername.SoftwareList.$dt.txt",
-		[string]$outputcsv = "$computername.SoftwareList.$dt.csv"
+		[string]$mPath='C:\temp\',
+		[string]$output = "$mPath$computername.SoftwareList.$dt.txt",
+		[string]$outputcsv = "$mPath$computername.SoftwareList.$dt.csv"
 	)
 	
 	#CLEAR
 	
-	If (test-path 'C:\temp')
-	{
-		Set-Location -Path 'C:\temp'
-	}
-	Else
-	{
-		Write-Warning "Temp directory does not exist; Exiting Script"
-		Exit
-	}
-	
-	Write-Host "`nGathering local software list`n" -ForegroundColor Green
+	Write-Host "`nGathering software list`n" -ForegroundColor Green
 	
 	Write-Verbose "Creating empty arrays`n"
 	$arry = @()
@@ -104,4 +95,6 @@ Date:		May 8, 2017
 		Write-Warning "Path/File: $output does not exist. Cannot create 'txt' or 'csv' files"
 	}
 	
-} #End: Function Get-InstalledSoftware
+} #End: Function Get-BBInstalledSoftware
+
+#Get-BBInstalledSoftware
